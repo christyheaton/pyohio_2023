@@ -3,9 +3,8 @@
 <head>
     <title>Hike Suggester</title>
     <meta charset="UTF-8">
-    <script defer src="https://pyscript.net/releases/2023.05.1/pyscript.js"></script>
-    <link rel="stylesheet" href="https://pyscript.net/releases/2023.05.1/pyscript.css" />
-
+	<link rel="stylesheet" href="https://pyscript.net/releases/2023.11.1/core.css" />
+	<script type="module" src="https://pyscript.net/releases/2023.11.1/core.js"></script>
 </head>
 <body>
   <div id="folium"></div>
@@ -16,6 +15,7 @@
 import folium
 import pandas as pd
 import geopandas as gpd
+from pyscript import display
 from pyodide.http import open_url
 
 # load and read data
