@@ -7,11 +7,10 @@
 	<script type="module" src="https://pyscript.net/releases/2023.11.1/core.js"></script>
 </head>
 <body>
-  <div id="folium"></div>
   <py-config>
-    packages = ["folium", "pandas", "geopandas", "matplotlib", "mapclassify"]
+    packages = ["folium", "geopandas", "matplotlib", "mapclassify"]
   </py-config>
-<py-script output="map">
+<script type="py">
 import folium
 import pandas as pd
 import geopandas as gpd
@@ -34,7 +33,6 @@ hikes_gdf = hikes_gdf.set_crs("epsg:4326")
 sample_hikes = hikes_gdf.sample(n=5)
 
 # create interactive map
-# m = sample_hikes.explore(tiles="CartoDB positron", color="brown", tooltip=["TITLE", "DISTANCE", "GAIN"])
 m = sample_hikes.explore(tiles="CartoDB positron", 
                          color="brown",
                          tooltip=["TITLE", "DISTANCE", "GAIN"], 
@@ -46,6 +44,6 @@ m = sample_hikes.explore(tiles="CartoDB positron",
                          marker_type="marker",
                          marker_kwds=dict(icon=folium.DivIcon()))
 display(m)
-</py-script>
+</script>
 </body>
 </html>
