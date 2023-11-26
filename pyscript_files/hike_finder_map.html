@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hike Suggester</title>
+    <title>5 Random Hikes</title>
     <meta charset="UTF-8">
 	<link rel="stylesheet" href="https://pyscript.net/releases/2023.11.1/core.css" />
 	<script type="module" src="https://pyscript.net/releases/2023.11.1/core.js"></script>
@@ -17,32 +17,27 @@ import geopandas as gpd
 from pyscript import display
 from pyodide.http import open_url
 
-# load and read data
-url = "https://raw.githubusercontent.com/christyheaton/pyohio_2023/main/data/2021-04-25_wta_hike_data_clean.csv"
-hike_data = pd.read_csv(open_url(url))
+hikes_url = "https://raw.githubusercontent.com/christyheaton/pyohio_2023/main/data/2021-04-25_wta_hike_data_clean.csv"
+hike_data = pd.read_csv(open_url(hikes_url))
 
-# filter data
+states_url = "https://raw.githubusercontent.com/christyheaton/pyohio_2023/main/data/USA_States_Generalized.geojson"
+states = gpd.read_file(open_url(states_url))
+
+wash = states[states["STATE_NAME"] == "Washington"]
+
 hike_data = hike_data[(hike_data["DISTANCE"] >= 8) & (hike_data["DISTANCE"] <= 20) & (hike_data["DIST_TYPE"] == "roundtrip")].reset_index(drop=True)
 hike_data = hike_data[hike_data["RATING"] >= 4].reset_index(drop=True)
 
-# add geometry
 hikes_gdf = gpd.GeoDataFrame(hike_data, geometry=gpd.points_from_xy(hike_data.LONGITUDE, hike_data.LATITUDE))
 hikes_gdf = hikes_gdf.set_crs("epsg:4326")
 
-# create sample
 sample_hikes = hikes_gdf.sample(n=5)
 
-# create interactive map
-m = sample_hikes.explore(tiles="CartoDB positron", 
-                         color="brown",
-                         tooltip=["TITLE", "DISTANCE", "GAIN"], 
-                         style_kwds=dict(
-                             style_function=lambda x: {
-                             "html": f"""<span   class="fa fa-person-hiking" 
-                             style='color:{x["properties"]["__folium_color"]}; 
-							 font-size:30px'></span>"""},),
-                         marker_type="marker",
-                         marker_kwds=dict(icon=folium.DivIcon()))
+m = wash.explore(tiles="CartoDB positron", style_kwds={"fill": False})
+sample_hikes.explore(m=m, 
+                     color="brown",
+                     marker_kwds={"radius": 5},
+                     tooltip=["TITLE", "DISTANCE", "GAIN"])
 display(m)
 </script>
 </body>
