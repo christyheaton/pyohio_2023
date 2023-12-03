@@ -14,7 +14,7 @@
 
 ### Run code from pyscript.com
 
-* https://cheaton.pyscriptapps.com/5-random-hikes-in-washington-state/latest/
+* https://pyscript.com/@cheaton/pyohio/latest
 
 
 ### To run the code in the Jupyter Notebooks

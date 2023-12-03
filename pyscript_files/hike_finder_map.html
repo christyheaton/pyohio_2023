@@ -7,9 +7,7 @@
 </head>
     <script type="module">
         import { hooks } from "https://pyscript.net/releases/2023.11.1/core.js";
-            
         const loading = document.getElementById("loading");
-
         hooks.main.onReady.add(() => {
             loading.remove();
         })
@@ -49,7 +47,10 @@ states = gpd.read_file(open_url(states_url))
 
 wash = states[states["STATE_NAME"] == "Washington"]
 
-hikes_gdf = gpd.GeoDataFrame(hike_data, geometry=gpd.points_from_xy(hike_data.LONGITUDE, hike_data.LATITUDE)).set_crs("epsg:4326")
+hikes_gdf = gpd.GeoDataFrame(hike_data, 
+                             geometry=gpd.points_from_xy(hike_data.LONGITUDE,
+							                             hike_data.LATITUDE)).set_crs("epsg:4326")
+														 
 hikes_gdf = hikes_gdf[(hikes_gdf["DISTANCE"] >= 8) & (hikes_gdf["DISTANCE"] <= 20) & (hikes_gdf["DIST_TYPE"] == "roundtrip")].reset_index(drop=True)
 
 sample_hikes = hikes_gdf.sample(n=5)
